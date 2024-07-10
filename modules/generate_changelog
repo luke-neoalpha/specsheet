@@ -1,0 +1,18 @@
+#!/bin/bash
+
+echo "# Changelog" > CHANGELOG.md
+
+echo -e "\nThis is an auto-generated changelog file using the \`modules/generate_changelog\` script. We track the notable changes to this project using the conventional commit messages in the \`main\` branch." >> CHANGELOG.md
+
+echo -e "\n" >> CHANGELOG.md
+echo -e "## Versions\n" >> CHANGELOG.md
+git log --tags --no-walk --oneline --pretty="- %h %d %s" >> CHANGELOG.md
+
+commits=("chore:|chore\!:" "docs:" "feat:|feat\!:" "fix:|fix\!:" "improvement:|improvement\!:" "refactor:|refactor\!:" "test:|test\!:")
+headers=("Chores" "Documentation" "Features" "Fixes" "Improvements" "Refactors" "Tests")
+
+for commit in "${!commits[@]}"; do
+		echo -e "\n" >> CHANGELOG.md
+		echo -e "## ${headers[commit]}\n" >> CHANGELOG.md
+		git log --pretty="- %h - %s (%cD)" | grep -E "${commits[commit]}" >> CHANGELOG.md
+done
