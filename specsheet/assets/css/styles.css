@@ -1,0 +1,144 @@
+.container {
+  padding: 10px;
+  border: 2px solid #e4e4e4;
+  border-radius: 15px;
+  margin-bottom: 20px;
+  height: 320px; /* Specify the height here */
+  overflow-y: auto; /* Add scroll bar if content overflows vertically */
+}
+.container-title {
+  font-size: 24px; /* Make the font larger */
+  margin-bottom: 10px;
+  border-bottom: 1px solid white;
+}
+.image-container {
+  width: 100%;
+  height: 250px; /* Fixed height */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  background-color: white;
+  border: 2px solid #e4e4e4;
+  border-radius: 15px;
+  margin-bottom: 10px;
+}
+.image-container img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain; /* Fit image within the container */
+}
+.technical-description-container {
+  height: 125px;
+  overflow-y: auto;
+  margin-bottom: 20px;
+}
+.product-configuration-container {
+  height: 40px;
+  margin-bottom: 20px;
+}
+.section-title {
+  font-weight: bold;
+  font-size: 12px;
+}
+.view-btn {
+  background-color: transparent;
+  color: white;
+  border: 1px solid #e7e7e7;
+  border-radius: 10px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+.view-btn:hover {
+  background-color: #e7e7e7;
+  color: black;
+}
+.details-image-container {
+  width: 100%;
+  padding: 10px;
+  background-color: white;
+  border: 2px solid #e4e4e4;
+  border-radius: 15px;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/*Product View*/
+
+.product-container {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+.product-column {
+  flex: 1;
+  min-width: 300px;
+  padding: 10px;
+}
+.product-column-wide {
+  flex: 2;
+  min-width: 600px;
+  padding: 10px;
+}
+.product-column-wide div {
+  margin-bottom: 20px;
+}
+.side-by-side {
+  display: flex;
+  justify-content: space-between;
+}
+.side-by-side > div {
+  width: 48%;
+}
+.stButton button {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #e4e4e4;
+}
+
+/* Pop-up window styling */
+.popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 20px;
+  background-color: white;
+  border: 2px solid #e4e4e4;
+  border-radius: 15px;
+  z-index: 1000;
+}
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+
+.product-cart {
+  font-family: Arial, Helvetica, sans-serif;
+  border-radius: 6px;
+  padding: 1px;
+  border: 1px solid #e4e4e4;
+}
+
+.product-cart p {
+  font-size: x-large;
+  margin: 3px;
+  margin-left: 10px;
+}
+
+.stDownloadButton button {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #e4e4e4;
+}
+
+.stAlert {
+  text-align: center;
+}
