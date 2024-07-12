@@ -5,7 +5,7 @@ import mysql.connector
 
 def get_db_connection(db_name):
     return mysql.connector.connect(
-        host="localhost", user="root", password="Hondafd14", database=db_name
+        host="localhost", user="root", password="", database=db_name
     )
 
 
@@ -162,10 +162,12 @@ def add_accessory_to_product_list(product_code, accessory_code):
     conn = get_db_connection("Neoalpha_Product_Record")
     cursor = conn.cursor()
 
-    # # Check if product exists in Product_List
-    # if not product_exists_in_product_list("Neoalpha_Product_Record", product_code):
-    #     print(f"Product '{product_code}' does not exist in Product List. Please add it first.")
-    #     return False
+    # Check if product exists in Product_List
+    if not product_exists_in_product_list("Neoalpha_Product_Record", product_code):
+        print(
+            f"Product '{product_code}' does not exist in Product List. Please add it first."
+        )
+        return False
 
     # Fetch existing accessories
     cursor.execute(
@@ -223,45 +225,6 @@ def check_accessory_exists(product_code, accessory_code):
     else:
         print(f"No results found for product_code: {product_code}")
         return False
-
-
-# def remove_accessory_from_product_list(id, accessory_code):
-#     conn = get_db_connection("Neoalpha_Product_Record")
-#     cursor = conn.cursor()
-
-#     # Fetch accessory_codes JSON from the database for the given id
-#     query_select = "SELECT accessory_codes FROM Product_List WHERE id = %s"
-#     cursor.execute(query_select, (id,))
-#     result = cursor.fetchone()
-
-#     if result:
-#         accessory_codes_json = result[0]
-#         if accessory_codes_json:
-#             accessory_codes = json.loads(accessory_codes_json)
-#             if accessory_code in accessory_codes:
-#                 accessory_codes.remove(accessory_code)
-#                 updated_accessory_codes_json = json.dumps(accessory_codes)
-#                 query_update = "UPDATE Product_List SET accessory_codes = %s WHERE id = %s"
-#                 cursor.execute(query_update, (updated_accessory_codes_json, id))
-#                 conn.commit()
-#                 cursor.close()
-#                 conn.close()
-#                 return True
-#             else:
-#                 print(f"Accessory code {accessory_code} not found in id {id}")
-#                 cursor.close()
-#                 conn.close()
-#                 return False
-#         else:
-#             print(f"accessory_codes is empty for id: {id}")
-#             cursor.close()
-#             conn.close()
-#             return False
-#     else:
-#         print(f"No results found for id: {id}")
-#         cursor.close()
-#         conn.close()
-#         return False
 
 
 def remove_accessory_from_product_list(id, accessory_code):
