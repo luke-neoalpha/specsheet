@@ -3,6 +3,9 @@ import time
 import pandas as pd
 import streamlit as st
 from pdf_generator.pdf_generator import generate_pdf
+from utils.components import (
+    view_product_in_cart,  # Import view_product from product_view.py
+)
 from utils.database import (
     delete_image,
     delete_product_from_added_products,
@@ -84,7 +87,7 @@ def display_products():
                     code.strip() for code in cleaned_string.split(",")
                 ]
             else:
-                accessory_codes_list = []
+                accessory_codes_list = None
             product_col, view_product_col, delete_col = st.columns([6, 1, 1])
             with product_col:
                 st.markdown(
@@ -144,115 +147,11 @@ def display_products():
                 )
 
 
-def view_product(product):
-    db_name = product["Database Name"]
-    product_code = product["Product Code"]
-    # Fetch detailed information about the product based on db_name and product_code
-    product_details = fetch_product_images(db_name, product_code)
-    product_information = fetch_product(db_name, product_code)
-
-    st.markdown(
-        f"""
-            <div class="product-container">
-                <div class="product-column">
-                    <div class="side-by-side">
-                        <div><p>Product Code:</p> {product_code}</div>
-                        <div><p>Product Configuration:</p> {product_information[0][2]}</div>
-                    </div>
-                    <hr/>
-                    <div class="side-by-side">
-                        <div><p>Product Base Code:</p> {product_information[0][3]}</div>
-                        <div><p>Installation:</p> {product_information[0][5]}</div>
-                    </div>
-                    <hr/>
-                    <div class="side-by-side">
-                        <div><p>Colour:</p> {product_information[0][6]}</div>
-                        <div><p>Weight:</p> {product_information[0][7]}</div>
-                    </div>
-                    <hr/>
-                    <div><p>Notes:</p> {product_information[0][10]}</div>
-                    <hr/>
-                    <div class="side-by-side">
-                        <div><p>Time Added:</p> {product_information[0][12]}</div>
-                        <div><p>Added By:</p> {product_information[0][13]}</div>
-                    </div>
-                </div>
-                <div class="product-column-wide">
-                    <div><p>Technical Description:</p> {product_information[0][4]}</div>
-                    <hr/>
-                     <div class="side-by-side">
-                        <div><p>Mounting:</p> {product_information[0][8]}</div>
-                        <div><p>Wiring:</p> {product_information[0][9]}</div>
-                    </div>
-                    <hr/>
-                    <div><p>Technical Data:</p> {product_information[0][11]}</div>
-                </div>
-            </div>
-            <hr/>
-        """,
-        unsafe_allow_html=True,
-    )
-
-    if product_details:
-        num_columns = 4
-        columns = st.columns(num_columns)
-        image_details = fetch_image_details(db_name, product_code)
-
-        for idx, image in enumerate(product_details):
-            with columns[idx % num_columns]:
-                img_base64 = get_image_base64(image[0])
-                st.markdown(
-                    f"<div class='details-image-container'>"
-                    f"<img class='image-container' src='data:image/jpeg;base64,{img_base64}' alt='Product Image'/>"
-                    f"</div>",
-                    unsafe_allow_html=True,
-                )
-                if idx < len(image_details):
-                    current_id, current_name = image_details[idx]
-                else:
-                    current_id, current_name = None, ""
-
-                edit_col, delete_col = st.columns(2)
-                with edit_col:
-                    if st.button("Edit Name", key=f"edit_name_{idx}"):
-                        st.session_state[f"edit_{idx}"] = True
-
-                with delete_col:
-                    if st.button("Delete Image", key=f"delete_image_{idx}"):
-                        st.session_state[f"delete_{idx}"] = True
-
-                if st.session_state.get(f"delete_{idx}", False):
-                    if st.button("Confirm Delete", key=f"confirm_delete_{idx}"):
-                        if current_id is not None:
-                            delete_image(db_name, current_id)
-                            st.success("Image deleted successfully!")
-                        st.session_state[f"delete_{idx}"] = False
-                    if st.button("Cancel Delete", key=f"cancel_delete_{idx}"):
-                        st.session_state[f"delete_{idx}"] = False
-
-                if st.session_state.get(f"edit_{idx}", False):
-                    new_name = st.text_input(
-                        "Image Name", key=f"new_name_{idx}", value=current_name
-                    )
-                    save_col, cancel_col = st.columns(2)
-                    with save_col:
-                        if st.button("Save Name", key=f"save_name_{idx}"):
-                            if current_id is not None:
-                                update_image_name(db_name, current_id, new_name)
-                                st.success("Image name updated successfully!")
-                            st.session_state[f"edit_{idx}"] = False
-                    with cancel_col:
-                        if st.button("Cancel", key=f"cancel_{idx}"):
-                            st.session_state[f"edit_{idx}"] = False
-                else:
-                    st.write(current_name)
-
-
 def main():
     selected_product = st.session_state.get("selected_product_1")
 
     if selected_product is not None:
-        view_product(selected_product)
+        view_product_in_cart(selected_product)
         if st.button("Back to Cart"):
             st.session_state.pop("selected_product_1")
             st.rerun()
