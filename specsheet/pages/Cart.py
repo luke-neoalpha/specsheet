@@ -128,6 +128,20 @@ def display_products():
         #     st.dataframe(manufacturer_df)
 
     st.markdown("""---""")
+    st.markdown(
+        "<h1 style='text-align: center;'>Product Summary</h1>", unsafe_allow_html=True
+    )
+    st.markdown("""---""")
+    if not detailed_df.empty:
+        products_boq_col, manufacturer_boq_col = st.columns([7, 5])
+        with products_boq_col:
+            with st.expander("Product Summary"):
+                st.dataframe(detailed_df)
+        with manufacturer_boq_col:
+            with st.expander("Manufacturer Summary"):
+                st.dataframe(manufacturer_df)
+
+    st.markdown("""---""")
     empty_col, generate_pdf_col = st.columns([3, 1])
     with empty_col:
         st.write(" ")
