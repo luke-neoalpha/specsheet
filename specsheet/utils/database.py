@@ -276,3 +276,13 @@ def remove_accessory_from_product_list(id, accessory_code):
 
     cursor.close()
     conn.close()
+
+
+# Get Count of Products in Cart
+def count_product_list():
+    conn = get_db_connection("Neoalpha_Product_Record")
+    cursor = conn.cursor()
+    cursor.execute("SELECT COUNT(*) AS total_rows FROM Product_List")
+    result = cursor.fetchone()
+    conn.close()
+    return result[0]
