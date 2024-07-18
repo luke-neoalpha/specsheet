@@ -4,6 +4,7 @@ from utils.database import (
     add_accessory_to_product_list,
     add_product_to_product_list,
     check_accessory_exists,
+    count_product_list,
     delete_image,
     delete_product_from_added_products,
     fetch_accessories_for_product,
@@ -22,6 +23,11 @@ from utils.styles import load_css
 
 # Function to display the Product Cart in the sidebar
 def display_added_products():
+    total_added_products = count_product_list()
+    st.sidebar.markdown(
+        f"<h4 style='text-align: center;'>Total Products: {total_added_products}</h4>",
+        unsafe_allow_html=True,
+    )
     st.sidebar.markdown(
         "<h1 style='text-align: center;'>Product Cart</h1>", unsafe_allow_html=True
     )
