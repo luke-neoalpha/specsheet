@@ -65,6 +65,12 @@ for row in data:
 
 display_data = filtered_data[:num_records]
 
+st.sidebar.markdown(
+    f"<h4 style='text-align: center;'>Available Products: {len(display_data)}</h4>",
+    unsafe_allow_html=True,
+)
+st.sidebar.markdown("---")
+
 
 def main_view():
     st.title("Product Viewer")
